@@ -27,13 +27,12 @@
     ],
     "minimum_edge_version": "37.14316.1000.0",
     "background": {
-    "page": "background.html",
-    "persistent": true
-  },
+        "page": "background.html",
+        "persistent": true
+    },
     "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "css" : ["css/light.css"],
       "js": ["js/content.js"],
       "run_at": "document_end"
     }
