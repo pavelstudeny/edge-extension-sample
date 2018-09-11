@@ -7,3 +7,9 @@ browser.browserAction.onClicked.addListener(function(tab) {
     .then(body => console.log(body))
     .catch(err => console.log('error', err));
 });
+
+browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  if (message.type === 'ping') {
+    sendResponse('pong');
+  }
+});

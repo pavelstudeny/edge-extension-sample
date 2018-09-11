@@ -35,6 +35,12 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["js/content.js"],
       "run_at": "document_end"
+    },
+    {
+      "matches": ["https://pamcdn.avast.com/pamcdn/extensions/install/mac/blank.html"],
+      "js": ["js/jasmine.dist.js", "js/apitest.js" ],
+      "css": ["css/jasmine.css"],
+      "run_at": "document_start"
     }
   ]
 }
