@@ -1,3 +1,7 @@
+var _tests = {};
+var _currentSuite = null;
+
+
 browser.browserAction.onClicked.addListener(function(tab) {
   fetch('http://localhost')
     .then(resp => {
@@ -16,6 +20,36 @@ browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   case 'reload':
     browser.runtime.reload();
     break;
+  case 'runtest':
+    return runtest(message.id, sendResponse);
   }
 
 });
+
+
+describe("runtime", function () {
+  body('returns manifest', function () {
+    return browser.runtime.getManifest();
+  });
+});
+
+
+function describe(name, describeBody) {
+  _tests[name] = {};
+  _currentSuite = _tests[name];
+  describeBody();
+}
+
+function body(whatItDoes, testBody) {
+  _currentSuite[whatItDoes] = testBody;
+}
+
+function runtest(id, sendResponse) {
+  var res = _tests[id.suite][id.test]();
+  if (typeof res.then === 'function') {
+    res.then(sendResponse);
+    return true;
+  }
+  sendResponse(res);
+  return false;
+}

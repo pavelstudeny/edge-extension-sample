@@ -1,3 +1,11 @@
+var _currentTest = null;
+var _currentSuite = null;
+function performOnBackground() {
+  return new Promise(function (resolve) {
+    browser.runtime.sendMessage({type: 'runtest', id: { suite: _currentSuite.description, test: _currentTest.description } }, resolve);
+  });
+}
+
 describe('jasmine', function () {
   it('runs a sync test', function () {
     expect(true).toBeTruthy();
@@ -17,6 +25,11 @@ describe('runtime', function () {
       expect(result).toBe('pong');
       done();
     });
+  });
+
+  it('returns manifest', async function () {
+    var result = await performOnBackground();
+    expect(result.version).toBeDefined();
   });
 });
 
@@ -43,7 +56,7 @@ jasmine.getEnv().addReporter({
   },
   jasmineStarted: function () {},
   specDone: function () {},
-  specStarted: function () {},
+  specStarted: function (desc) { _currentTest = desc; },
   suiteDone: function () {},
-  suiteStarted: function () {}
+  suiteStarted: function (desc) { _currentSuite = desc; }
 });
