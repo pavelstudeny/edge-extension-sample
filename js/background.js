@@ -9,7 +9,13 @@ browser.browserAction.onClicked.addListener(function(tab) {
 });
 
 browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  if (message.type === 'ping') {
+  switch (message.type) {
+  case 'ping':
     sendResponse('pong');
+    break;
+  case 'reload':
+    browser.runtime.reload();
+    break;
   }
+
 });

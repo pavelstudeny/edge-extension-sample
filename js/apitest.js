@@ -19,3 +19,26 @@ describe('runtime', function () {
     });
   });
 });
+
+jasmine.getEnv().addReporter({
+  jasmineDone: function () {
+    var button = document.createElement('button');
+    button.innerText = 'reload extension'
+    button.addEventListener('click', function () {
+      browser.runtime.sendMessage({type: 'reload'});
+      setTimeout(function () {
+        location.reload();
+      }, 2000);
+    });
+    button.style.borderColor = '#007069';
+    button.style.borderStyle = 'solid';
+    button.style.color = '#007069';
+    button.style.backgroundColor = '#bababa';
+    document.body.appendChild(button);
+  },
+  jasmineStarted: function () {},
+  specDone: function () {},
+  specStarted: function () {},
+  suiteDone: function () {},
+  suiteStarted: function () {}
+});
