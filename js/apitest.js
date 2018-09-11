@@ -25,6 +25,10 @@ jasmine.getEnv().addReporter({
     var button = document.createElement('button');
     button.innerText = 'reload extension'
     button.addEventListener('click', function () {
+      var loader = document.createElement('div');
+      loader.classList.add('loader');
+      this.appendChild(loader);
+
       browser.runtime.sendMessage({type: 'reload'});
       setTimeout(function () {
         location.reload();
@@ -34,6 +38,7 @@ jasmine.getEnv().addReporter({
     button.style.borderStyle = 'solid';
     button.style.color = '#007069';
     button.style.backgroundColor = '#bababa';
+    button.style.height = '2em';
     document.body.appendChild(button);
   },
   jasmineStarted: function () {},
