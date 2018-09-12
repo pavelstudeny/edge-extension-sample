@@ -21,7 +21,7 @@ browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     browser.runtime.reload();
     break;
   case 'runtest':
-    return runtest(message.id, sendResponse);
+    return runtest(message.id, sender, sendResponse);
   }
 
 });
@@ -31,11 +31,32 @@ browser.browserAction.onClicked.addListener(function() {
 });
 
 
-describe("runtime", function () {
+describe('runtime', function () {
   body('returns manifest', function () {
     return browser.runtime.getManifest();
   });
 });
+
+describe('tabs', function () {
+  body('queries by url', function (sender) {
+    return new Promise(function (resolve) {
+      browser.tabs.query({ url: sender.tab.url }, resolve);
+    });
+  });
+
+  body('sends messages to tabs', function (sender) {
+    browser.tabs.sendMessage(sender.tab.id, { type: 'bing' });
+  });
+
+  body('gets a tab by id', async function (sender) {
+    return new Promise(function (resolve) {
+      browser.tabs.get(sender.tab.id, function (tab) {
+        resolve(tab.id === sender.tab.id && tab.url === sender.tab.url);
+      });
+    });
+  });
+});
+
 
 
 
@@ -49,8 +70,8 @@ function body(whatItDoes, testBody) {
   _currentSuite[whatItDoes] = testBody;
 }
 
-function runtest(id, sendResponse) {
-  var res = _tests[id.suite][id.test]();
+function runtest(id, sender, sendResponse) {
+  var res = _tests[id.suite][id.test](sender);
   if (typeof res.then === 'function') {
     res.then(sendResponse);
     return true;

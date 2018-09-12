@@ -33,6 +33,30 @@ describe('runtime', function () {
   });
 });
 
+describe('tabs', function () {
+  it('queries by url', async function () {
+    var result = await performOnBackground();
+    var myUrl = window.location.href;
+    expect(result).toEqual(jasmine.arrayContaining([jasmine.objectContaining({ url: myUrl })]));
+  });
+
+  it('sends messages to tabs', function () {
+    return new Promise(function (resolve) {
+      browser.runtime.onMessage.addListener(function (message) {
+        expect(message).toEqual(jasmine.objectContaining({ type: 'bing' }));
+        resolve();
+      });
+
+      performOnBackground();
+    });
+  });
+
+  it('gets a tab by id', async function () {
+    var result = await performOnBackground();
+    expect(result).toBe(true);
+  });
+});
+
 
 
 
