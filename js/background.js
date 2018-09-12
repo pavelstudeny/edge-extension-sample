@@ -26,12 +26,17 @@ browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
 });
 
+browser.browserAction.onClicked.addListener(function() {
+  browser.tabs.create({ url: 'https://pamcdn.avast.com/pamcdn/extensions/install/mac/blank.html' });
+});
+
 
 describe("runtime", function () {
   body('returns manifest', function () {
     return browser.runtime.getManifest();
   });
 });
+
 
 
 function describe(name, describeBody) {
