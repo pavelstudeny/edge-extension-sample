@@ -57,6 +57,18 @@ describe('tabs', function () {
   });
 });
 
+describe('i18n', function () {
+  it('returns browser language', function () {
+    var lang = browser.i18n.getUILanguage();
+    expect(lang).toMatch(/[a-z]{2}(_[0-9A-Za-z]+)?/);
+  });
+
+  it('translates a string', function () {
+    var str = browser.i18n.getMessage('product_name');
+    expect(str).toBe('Hello World');
+  });
+});
+
 
 
 

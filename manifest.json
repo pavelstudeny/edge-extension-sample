@@ -18,6 +18,7 @@
         },
         "default_title": "Hello World"
     },
+    "default_locale": "en",
     "permissions": [
         "contextMenus",
         "tabs",
